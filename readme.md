@@ -9,7 +9,7 @@ Enter the virtual environment
 > `source venv/bin/activate`
 
 Install tools
->`pip install pyopengl pytorch==1.6 matplotlib pandas numpy tqdm jupyter seaborn scikit-learn gym`
+>`pip install pyglet==1.5.27` pyopengl matplotlib pandas numpy tqdm jupyter seaborn scikit-learn gym==0.21.0
 
 Install torch
 > `pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu`

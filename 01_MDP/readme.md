@@ -17,7 +17,7 @@ Discrete-time Stochastic Control Process
 
 MDP has no memory:
 
-$P[s_{t+1}|S_t = s_t] = P[S_{t+1} | S_t = s_t, S_{t-1} = s_{t-1}, ..., S_0 = s_0$
+$P[s_{t+1}|S_t = s_t] = P[S_{t+1} | S_t = s_t, S_{t-1} = s_{t-1}, \cdots,  S_0 = s_0]$
 
 The next state only depends on current state and none of the previous states.
 
@@ -44,7 +44,7 @@ Episodic vs. Continuing
 
 <li>Episode: Trajectory from initial state of the task to the terminal state
 
->$\tau = S_0, A_0, R_1,S_1, A_1, R_2,S_2, ..., R_T, S_T$
+>$\tau = S_0, A_0, R_1,S_1, A_1, R_2,S_2, \cdots, R_T, S_T$
 </ul>
 
 <h2>Reward vs. Return</h2>
@@ -102,7 +102,7 @@ where $v_\pi(s) = E[R_{t+1} + \gamma R_{t+2}  + \cdots + \gamma R^{T-t-1}|S_t = 
 
 $q_\pi(s, a) = E[G_t|S_t = s, A_t = a]$
 
-where $q_\pi(s) = E[R_{t+1} + \gamma R_{t+2}  + \cdots + \gamma R^{T-t-1}|S_t = s, A_t = a]$ following policy $\pi$.
+where $q_\pi(s, a) = E[R_{t+1} + \gamma R_{t+2}  + \cdots + \gamma R^{T-t-1}|S_t = s, A_t = a]$ following policy $\pi$.
 
 <h2> Bellman Equations</h2>
 
@@ -110,11 +110,11 @@ where $q_\pi(s) = E[R_{t+1} + \gamma R_{t+2}  + \cdots + \gamma R^{T-t-1}|S_t = 
 
 $v_\pi(s) = E[G_t|S_t = s]$
 
-$ = E[R_{t+1} + \gamma R_{t+2}  + \cdots + \gamma R^{T-t-1}|S_t = s]$ 
+$= E[R_{t+1} + \gamma R_{t+2}  + \cdots + \gamma R^{T-t-1}|S_t = s]$ 
 
-$ = E[R_{1} + \gamma G_{t+2}|S_t = s]$ 
+$= E[R_{1} + \gamma G_{t+2}|S_t = s]$ 
 
-$ = \sum_a \pi(a|s) \sum_{s', r} p(s, r | s, a)[r + \gamma v_\pi(s')]$
+$= \sum_a \pi(a|s) \sum_{s', r} p(s, r | s, a)[r + \gamma v_\pi(s')]$
 
 following policy $\pi$.
 
@@ -122,11 +122,11 @@ following policy $\pi$.
 
 $q_\pi(s, a) = E[G_t|S_t = s, A_t = a]$
 
-$ = E[R_{t+1} + \gamma R_{t+2}  + \cdots + \gamma R^{T-t-1}|S_t = s, A_t = a]$ 
+$= E[R_{t+1} + \gamma R_{t+2}  + \cdots + \gamma R^{T-t-1}|S_t = s, A_t = a]$ 
 
-$ = E[R_{1} + \gamma G_{t+2}|S_t = s, A_t = a]$ 
+$= E[R_{1} + \gamma G_{t+2}|S_t = s, A_t = a]$ 
 
-$ = \sum_{s', r} p(s',r|s,a)[r + \gamma \sum_{a'} \pi(a'|s')q_\pi(s', a')]$
+$= \sum_{s', r} p(s',r|s,a)[r + \gamma \sum_{a'} \pi(a'|s')q_\pi(s', a')]$
 
 following policy $\pi$.
 
@@ -134,13 +134,13 @@ following policy $\pi$.
 
 The optimal policy $\pi_*$ is the one that chooses actions that maximizes $v(s)$ or $q(s,a)$:
 
-$v_*(s) \\= E_{\pi_*}[G_t | S_t = s] \\= \max_a \sum_{s', r} p(s', r|s, a)[r + \gamma v_*(s')] $ 
+$v_*(s) \\= E_{\pi_*}[G_t | S_t = s] \\= \max_a \sum_{s', r} p(s', r|s, a)[r + \gamma v_*(s')]$ 
 
 where $\pi_*(s) = \argmax_a \sum_{s',r} p(s', r|s, a)[r + \gamma v_*(s)]$, and 
 
 $q_*(s, a) \\= E_{\pi_*}[G_t | S_t = s, A_t = a]\\ = \sum_{s',r} p(s', r|s, a)[r + \gamma \max_{a'} q_*(s', a')]$
 
-where $\pi_*(s) = \argmax_a q_*(s, a)]$.
+where $\pi_*(s) = \argmax_a q_*(s, a)$.
 
 
 
