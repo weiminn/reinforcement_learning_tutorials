@@ -20,10 +20,26 @@ $v(s) \leftarrow \max_a \sum_{s',r}p(s',r|s,a)[r+\gamma v(s')]$
 
 where $v(s')$ an old value of this current value table for the next state.
 
+In value iteration, you change the policy only once at the end of all the iterations. Throughout the iterations, the policy is always constant (usually random uniform), and for every iteration, you evaluate the value for **every** action.
+
 ## Policy Iteration
 
-While value iteration iterates through all actions evenly, policy iteration iterates values and then set the policy to carry on iterating values using the newly set policy (Policy Evaluation):
+While value iteration iterates through all actions evenly, policy iteration iterates values and then update the policy (Policy Improvement) to carry out another "value iteration" using the newly set policy (Policy Evaluation):
 
 $v(s) \leftarrow \sum_a\pi(a|s) \sum_{s',r}p(s',r|s,a)[r+\gamma v(s')]$
 
-Getting the value of a state is now contingent on the probabiilty distribution from the policy, $\pi$, at the end of every value iteration instead of just simply getting the max at the end of value iterations.
+You evaluate for only **one** action that is given by your current policy, and thus the $\sum_a\pi(a|s)$ expression instead of $\max_a$.
+
+In policy iteration, you change the policy after every value iteration, so the policy is being updated (Improvement) across all the value iterations (Evaluation).
+
+### Policy Improvement Theorem
+
+If the new value of the state after choosing action with new policy, $q_\pi(s, \pi'(s))$, is greater than the original value, $v_\pi(s)$, then the new state value, $v_{\pi'}(s)$ is greater than original state value, $v_\pi(s)$:
+
+$q_\pi(s, \pi'(s)) \geq v_\pi(s) \Rightarrow v_{\pi'}(s) \geq v_\pi(s)$
+
+where $q_\pi(s,a) = \sum_{s',r}p(s',r|s,a)[r+\gamma v(s')]$.
+
+Then, the policy is updated to the new argument (action) that gives better value for the state:
+
+$\pi'(s) = \argmax_a \sum_{s',r}p(s',r|s,a)[r+\gamma v_\pi(s')]$.
