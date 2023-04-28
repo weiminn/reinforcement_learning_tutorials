@@ -14,13 +14,15 @@ You need to know in advance how the state changes and what rewards we get from p
 
 ## Value Iteration
 
-Update $v$ iteratively to get better approximation of optimal value at every iteration:
+Update $v$ iteratively to get better approximation of optimal value of **every action** at every iteration:
 
 $v(s) \leftarrow \max_a \sum_{s',r}p(s',r|s,a)[r+\gamma v(s')]$
 
 where $v(s')$ an old value of this current value table for the next state.
 
-In value iteration, you change the policy only once at the end of all the iterations. Throughout the iterations, the policy is always constant (usually random uniform), and for every iteration, you evaluate the value for **every** action.
+Throughout the value iterations, the policy is always constant (usually random uniform), and for every iteration, you evaluate the value for **every** action. Only at the end of all the iterations, you devise a Updated policy, by using the state values $V(s)$ and the models that gives transition probabilites $p(s',r'|s,a)$:
+
+$\pi(s) = \argmax_a \sum_{s',r}p(s',r|s,a)[r+\gamma v(s')]$
 
 ## Policy Iteration
 
@@ -28,9 +30,11 @@ While value iteration iterates through all actions evenly, policy iteration iter
 
 $v(s) \leftarrow \sum_a\pi(a|s) \sum_{s',r}p(s',r|s,a)[r+\gamma v(s')]$
 
-You evaluate for only **one** action that is given by your current policy, and thus the $\sum_a\pi(a|s)$ expression instead of $\max_a$.
-
 In policy iteration, you change the policy after every value iteration, so the policy is being updated (Improvement) across all the value iterations (Evaluation).
+
+In every evaluation, you evaluate for only **one** action that is given by your current policy, and thus the $\sum_a\pi(a|s)$ expression instead of $\max_a$. It also means you already have a policy and you don't need to calculate the policy using the model $p$ that gives transition probabilites:
+
+$\pi(s) = \argmax_a Q(s,a)$
 
 ### Policy Improvement Theorem
 
