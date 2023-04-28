@@ -3,17 +3,18 @@
 Discrete-time Stochastic Control Process
 <ul> 
 <li> Control: Make decisions to achieve the goals of the task
-<li> Stochastic: Agent's action only **partially** affects the evolution of the task
+<li> Stochastic: Agent's action only <em>partially</em> affects the evolution of the task
 <li> Discrete-time: time progresses in finite intervals
 </ul> 
 
-|![mdp](readme/mdp.png)|
-|:--:|
-|*Markov Decision Process*|
+Markov Decision Processes can be represented by 4-tuplet, $(S,A,R,P)$:
 
-|![mdp_rep](readme/mdp_representation.png)|
-|:--:|
-|*MDP Representation*|
+|Component|Description|
+|-|-
+|States, $S$|Set of all possible states
+|Actions, $A$|Set of actions that can be taken in each of the states
+|Rewards, $R$|Set of rewards for each (s,a) pair
+|Probabilities, $P$|Probabilities of passing from one state to another when taking each action
 
 MDP has no memory:
 
@@ -130,9 +131,9 @@ $= \sum_{s', r} p(s',r|s,a)[r + \gamma \sum_{a'} \pi(a'|s')q_\pi(s', a')]$
 
 following policy $\pi$.
 
-<h2>Solving MDP</h2>
+<h2>Bellman Optimality Equations</h2>
 
-The optimal policy $\pi_*$ is the one that chooses actions that maximizes $v(s)$ or $q(s,a)$:
+The optimal policy $\pi_*$ is the one that chooses **actions** that *maximizes* $v(s)$ or $q(s,a)$:
 
 $v_*(s) \\= E_{\pi_*}[G_t | S_t = s] \\= \max_a \sum_{s', r} p(s', r|s, a)[r + \gamma v_*(s')]$ 
 
