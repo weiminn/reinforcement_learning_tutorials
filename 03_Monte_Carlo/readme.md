@@ -64,3 +64,32 @@ $$
 $$
 
 where $\epsilon_r = \frac{\epsilon}{|A|}$.
+
+#### Off-Policy strategy
+
+We can use 2 seperate policies for exploration $b(a|s)$ to collect the experience/trajectory, and optimization (Target policy $\pi(a|s)$ that uses the experience from $b$) to improve towards optimal policy:
+
+$$\pi(s) \leftarrow \argmax_a Q(s,a).$$
+
+This means that Exploratory policy has to cover all the actions that the Target policy can take:
+
+$$\pi(a|s) > 0 \Rightarrow b(a|s)>0.$$
+
+Both $b$ and $\pi$ will still be using the same action values, but $b$ will have a bit more randomness in choosing the action, so the average return is not approximated under $\pi$ but under $b$ which handles the exploration:
+$$\mathbb{E}_b[G_t|S_t = s, A_t = a] = q_b(s,a).$$
+
+We need to make sure that the Exploratory policies are exploring properly. We can use the **Importance Sampling**, statistical technique to estimate the expected values of a distribution by working with samples from another distribution:
+
+$$ W_t = \prod_{k=t}^{T-1} \frac{\pi(A_k|S_k)}{b(A_k|S_k)} $$
+
+which gives the ratio of probability of following the trajectory by target policy and probability of following the trajectory by exploratory policy.
+
+By correcting the returns using importance sampling, we will approximate the value under $\pi$:
+
+$$\mathbb{E}[W_tG_t | S_t=s] = v_\pi(s).$$
+
+We then update the $Q$ values iteratively using the *alpha* approach:
+
+$$Q(s,a) \leftarrow Q(s,a) + \frac{W_t}{C(s,a)}[G-Q(s,a)]$$
+
+where $C(s,a) = \sum_{k=1}^{N} W_k$ to normalize the updates to smooth out the learning process.

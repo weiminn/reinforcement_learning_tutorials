@@ -1,0 +1,91 @@
+<h1 id="monte-carlo-methods">Monte Carlo Methods</h1>
+<p>Whereas Dynamic Programming learns the task in a iterative bottom-up
+approach, Monte Carlo method learns via episodic top-down approach. This
+is useful when you have to learn <span
+class="math inline"><em>v</em><sub>*</sub>(<em>s</em>)</span> or <span
+class="math inline"><em>q</em><sub>*</sub>(<em>s</em>,<em>a</em>)</span>
+via sampling because you have no model <span
+class="math inline"><em>p</em>(<em>s</em>′,<em>r</em>′|<em>s</em>,<em>a</em>)</span>.
+So, it is less complex because you can focus on the solving the task via
+episodic experience, and you don’t need to know the whole model of the
+environment. You use policy <span class="math inline"><em>π</em></span>
+to tackle the task for an entire episode:</p>
+<p><span
+class="math display"><em>S</em><sub>0</sub>, <em>A</em><sub>0</sub>, <em>R</em><sub>1</sub>, <em>S</em><sub>1</sub>, <em>A</em><sub>1</sub>, ..., <em>S</em><sub><em>T</em> − 1</sub>, <em>A</em><sub><em>T</em> − 1</sub>, <em>R</em><sub><em>T</em></sub>.</span></p>
+<p>At the end of episode, you compute the return for every state
+visited:</p>
+<p><span
+class="math display"><em>v</em><sub><em>π</em></sub>(<em>s</em>) = 𝔼<sub><em>π</em></sub>[<em>G</em><sub><em>t</em></sub>|<em>S</em><sub><em>t</em></sub>=<em>s</em>],
+and
+<em>q</em><sub><em>π</em></sub>(<em>s</em>,<em>a</em>) = 𝔼[<em>G</em><sub><em>t</em></sub>|<em>S</em><sub><em>t</em></sub>=<em>s</em>,<em>A</em><sub><em>t</em></sub>=<em>a</em>].</span></p>
+<p>where <span class="math inline">$G_t = \sum_{k=0}^{T-t-1}\gamma^k
+R_{t+k+1}$</span>.</p>
+<p>Thereforce, the estimated value for a state <span
+class="math inline"><em>s</em></span> or state action <span
+class="math inline">(<em>s</em>,<em>a</em>)</span> is the average of all
+the returns that the agent has collected in that state or action of the
+state:</p>
+<p>$$ V_(s) = <em>{k=1}^N G</em>{s_k} </p>
+<p>Q_= <em>{k=1}^N G</em>{s,a_k}. $$</p>
+<h2 id="calculating-values">Calculating Values</h2>
+<p>For a generated trajectory <span
+class="math inline">(<em>S</em><sub>0</sub>,<em>A</em><sub>0</sub>,<em>R</em><sub>1</sub>,<em>S</em><sub>1</sub>,<em>A</em><sub>1</sub>,...,<em>S</em><sub><em>T</em> − 1</sub>,<em>A</em><sub><em>T</em> − 1</sub>,<em>R</em><sub><em>T</em></sub>)</span>,
+we calculate the returns for each moment <span
+class="math inline"><em>t</em></span>:</p>
+<p><span
+class="math display"><em>G</em><sub><em>t</em></sub> = <em>R</em><sub><em>t</em> + 1</sub> + <em>γ</em><em>R</em><sub><em>t</em> + 2</sub> + <em>γ</em><sup>2</sup><em>R</em><sub><em>t</em> + 3</sub> + ... + <em>γ</em><sup><em>T</em> − <em>t</em> − 1</sup><em>R</em><sub><em>T</em></sub>.</span></p>
+<p>We can’t use <span class="math inline"><em>V</em></span> anymore
+because we don’t have the model <span
+class="math inline"><em>π</em>(<em>s</em>′,<em>a</em>′|<em>s</em>,<em>a</em>)</span>
+and calculating <span class="math inline"><em>v</em></span> requires the
+evaluation of <strong>each individual action</strong> in a state, so we
+can only learn for <span class="math inline"><em>Q</em></span> which
+already implicity learn the model:</p>
+<p><span
+class="math display"><em>q</em><sub><em>π</em></sub>(<em>s</em>,<em>a</em>) = ∑<sub><em>s</em>′, <em>r</em></sub><em>p</em>(<em>s</em>′,<em>r</em>|<em>s</em>,<em>a</em>)[<em>r</em>+<em>γ</em><em>v</em>(<em>s</em>′)].</span></p>
+<p>where as if you want to choose and action from <span
+class="math inline"><em>V</em></span>, you still need to pick the action
+<span class="math inline"><em>a</em></span> with the highest value, and
+to do that, you need know the next state for every action a leads to and
+you need to know model <span class="math inline"><em>p</em></span> to
+get probability distributions for the next state <span
+class="math inline"><em>s</em>′</span> from <span
+class="math inline">(<em>s</em>,<em>a</em>)</span>.</p>
+<h2 id="importance-of-exploration">Importance of Exploration</h2>
+<p>Since <span
+class="math inline"><em>Q</em>(<em>s</em>,<em>a</em>)</span> is an
+estimate that is improved by the agent collecting experience following
+unoptimal policies. Thereforce, the estimates may not be accurate
+especially in the beginning of the learning and there is a chance that
+the a bad estimate prevents the agent from ever choosing <span
+class="math inline">(<em>s</em>,<em>a</em>)</span> that might become
+optimal in the future. To prevent this, we make sure that all actions
+are chosen from time to time using:</p>
+<ol type="1">
+<li>Exploring starts with random state <span
+class="math inline"><em>S</em><sub>0</sub> ∼ <em>S</em></span> and
+random action <span
+class="math inline"><em>A</em><sub>0</sub> ∼ <em>A</em>(<em>S</em><sub>0</sub>)</span>
+and,</li>
+<li>Stochastic policies: <span
+class="math inline"><em>π</em>(<em>a</em>|<em>s</em>) &gt; 0, ∀<em>a</em> ∈ <em>A</em>(<em>s</em>)</span>.</li>
+</ol>
+<h3 id="stochastic-policies">Stochastic Policies</h3>
+<p>You can either generate the experience with the same policy you’re
+trying to optimize (On-Policy), or generate experience with an
+exploratory policy <span class="math inline"><em>b</em></span> different
+from the one we’re going to optimize.</p>
+<h4 id="epsilon-greedy-policy"><span
+class="math inline"><em>ϵ</em></span>-greedy Policy</h4>
+<p>You select a random action at probability <span
+class="math inline"><em>ϵ</em></span>, and select highest <span
+class="math inline"><em>Q</em>(<em>s</em>,<em>a</em>)</span> at
+probability <span class="math inline">1 − <em>ϵ</em></span>:</p>
+<p><span class="math display">$$
+\pi(a|s) = \begin{cases}
+1 -\epsilon + \epsilon_r \text{ for }  a = a^*\\
+\epsilon_r \; \; \; \; \; \; \; \; \; \; \; \; \text{ for } a \neq a^*
+\end{cases}
+$$</span></p>
+<p>where <span class="math inline">$\epsilon_r =
+\frac{\epsilon}{|A|}$</span>.</p>
