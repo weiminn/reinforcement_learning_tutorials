@@ -208,4 +208,4 @@ $$
 \end{equation}
 $$
 
-where the target is the bootstrapped $R_{t+1} + \gamma \hat{q}(S_{t+1}, A_{t+1}|w)$, while the prediction is the current value $\hat{q}(S_{t}, A_{t}|w)$.
+where the target is the bootstrapped $R_{t+1} + \gamma \hat{q}(S_{t+1}, A_{t+1}|w)$, while the prediction is the current value $\hat{q}(S_{t}, A_{t}|w)$.>
