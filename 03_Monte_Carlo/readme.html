@@ -1,23 +1,27 @@
 <h1 id="monte-carlo-methods">Monte Carlo Methods</h1>
-<p>Whereas Dynamic Programming learns the task in a iterative bottom-up
-approach, Monte Carlo method learns via episodic top-down approach. This
-is useful when you have to learn <span
+<p>Whereas Dynamic Programming learns the task in a iterative approach
+where you learn for every state or state-action values, Monte Carlo
+method learns for only the state-actions taken throughout the episode.
+This requires keeping track of state-action <span
+class="math inline"><em>Q</em></span> values just like <a
+href="../02_Dynamic_Programming/readme.md">Policy Iteration</a>, so
+Monte Carlo is useful when you have to learn <span
 class="math inline"><em>v</em><sub>*</sub>(<em>s</em>)</span> or <span
 class="math inline"><em>q</em><sub>*</sub>(<em>s</em>,<em>a</em>)</span>
-via sampling because you have no model <span
+via sampling/experience because you have no model <span
 class="math inline"><em>p</em>(<em>s</em>′,<em>r</em>′|<em>s</em>,<em>a</em>)</span>.
-So, it is less complex because you can focus on the solving the task via
-episodic experience, and you don’t need to know the whole model of the
-environment. You use policy <span class="math inline"><em>π</em></span>
-to tackle the task for an entire episode:</p>
+To generate the trajectory/experience, you use policy <span
+class="math inline"><em>π</em></span> to select your actions throughout
+the episode:</p>
 <p><span
 class="math display"><em>S</em><sub>0</sub>, <em>A</em><sub>0</sub>, <em>R</em><sub>1</sub>, <em>S</em><sub>1</sub>, <em>A</em><sub>1</sub>, ..., <em>S</em><sub><em>T</em> − 1</sub>, <em>A</em><sub><em>T</em> − 1</sub>, <em>R</em><sub><em>T</em></sub>.</span></p>
 <p>At the end of episode, you compute the return for every state
 visited:</p>
 <p><span
-class="math display"><em>v</em><sub><em>π</em></sub>(<em>s</em>) = 𝔼<sub><em>π</em></sub>[<em>G</em><sub><em>t</em></sub>|<em>S</em><sub><em>t</em></sub>=<em>s</em>],
-and
-<em>q</em><sub><em>π</em></sub>(<em>s</em>,<em>a</em>) = 𝔼[<em>G</em><sub><em>t</em></sub>|<em>S</em><sub><em>t</em></sub>=<em>s</em>,<em>A</em><sub><em>t</em></sub>=<em>a</em>].</span></p>
+class="math display"><em>v</em><sub><em>π</em></sub>(<em>s</em>) = 𝔼<sub><em>π</em></sub>[<em>G</em><sub><em>t</em></sub>|<em>S</em><sub><em>t</em></sub>=<em>s</em>],</span></p>
+<p>or</p>
+<p><span
+class="math display"><em>q</em><sub><em>π</em></sub>(<em>s</em>,<em>a</em>) = 𝔼[<em>G</em><sub><em>t</em></sub>|<em>S</em><sub><em>t</em></sub>=<em>s</em>,<em>A</em><sub><em>t</em></sub>=<em>a</em>].</span></p>
 <p>where <span class="math inline">$G_t = \sum_{k=0}^{T-t-1}\gamma^k
 R_{t+k+1}$</span>.</p>
 <p>Thereforce, the estimated value for a state <span
@@ -25,8 +29,17 @@ class="math inline"><em>s</em></span> or state action <span
 class="math inline">(<em>s</em>,<em>a</em>)</span> is the average of all
 the returns that the agent has collected in that state or action of the
 state:</p>
-<p>$$ V_(s) = <em>{k=1}^N G</em>{s_k} </p>
-<p>Q_= <em>{k=1}^N G</em>{s,a_k}. $$</p>
+<p><span class="math display">$$
+\begin{equation}
+V_\pi(s) = \frac{1}{N} \sum_{k=1}^N G_{s_k},
+\end{equation}
+$$</span></p>
+<p>and</p>
+<p><span class="math display">$$
+\begin{equation}
+Q_\pi = \frac{1}{N}\sum_{k=1}^N G_{s,a_k}.
+\end{equation}
+$$</span></p>
 <h2 id="calculating-values">Calculating Values</h2>
 <p>For a generated trajectory <span
 class="math inline">(<em>S</em><sub>0</sub>,<em>A</em><sub>0</sub>,<em>R</em><sub>1</sub>,<em>S</em><sub>1</sub>,<em>A</em><sub>1</sub>,...,<em>S</em><sub><em>T</em> − 1</sub>,<em>A</em><sub><em>T</em> − 1</sub>,<em>R</em><sub><em>T</em></sub>)</span>,
@@ -35,12 +48,13 @@ class="math inline"><em>t</em></span>:</p>
 <p><span
 class="math display"><em>G</em><sub><em>t</em></sub> = <em>R</em><sub><em>t</em> + 1</sub> + <em>γ</em><em>R</em><sub><em>t</em> + 2</sub> + <em>γ</em><sup>2</sup><em>R</em><sub><em>t</em> + 3</sub> + ... + <em>γ</em><sup><em>T</em> − <em>t</em> − 1</sup><em>R</em><sub><em>T</em></sub>.</span></p>
 <p>We can’t use <span class="math inline"><em>V</em></span> anymore
-because we don’t have the model <span
-class="math inline"><em>π</em>(<em>s</em>′,<em>a</em>′|<em>s</em>,<em>a</em>)</span>
-and calculating <span class="math inline"><em>v</em></span> requires the
-evaluation of <strong>each individual action</strong> in a state, so we
-can only learn for <span class="math inline"><em>Q</em></span> which
-already implicity learn the model:</p>
+because value iteration does not update policy <span
+class="math inline"><em>π</em></span> or remember state-value <span
+class="math inline"><em>Q</em></span>, and solving the task requires the
+formulation of policy by evaluating <strong>each individual
+action</strong> in a state. So, we can only learn for <span
+class="math inline"><em>Q</em></span> which already implicity learn the
+model:</p>
 <p><span
 class="math display"><em>q</em><sub><em>π</em></sub>(<em>s</em>,<em>a</em>) = ∑<sub><em>s</em>′, <em>r</em></sub><em>p</em>(<em>s</em>′,<em>r</em>|<em>s</em>,<em>a</em>)[<em>r</em>+<em>γ</em><em>v</em>(<em>s</em>′)].</span></p>
 <p>where as if you want to choose and action from <span
@@ -82,10 +96,56 @@ class="math inline"><em>ϵ</em></span>, and select highest <span
 class="math inline"><em>Q</em>(<em>s</em>,<em>a</em>)</span> at
 probability <span class="math inline">1 − <em>ϵ</em></span>:</p>
 <p><span class="math display">$$
+\begin{equation}
 \pi(a|s) = \begin{cases}
-1 -\epsilon + \epsilon_r \text{ for }  a = a^*\\
-\epsilon_r \; \; \; \; \; \; \; \; \; \; \; \; \text{ for } a \neq a^*
+1 -\epsilon + \epsilon_r &amp; \text{ for } a = a^*\\
+\epsilon_r &amp; \text{ for } a \neq a^*
 \end{cases}
+\end{equation}
 $$</span></p>
 <p>where <span class="math inline">$\epsilon_r =
 \frac{\epsilon}{|A|}$</span>.</p>
+<h4 id="off-policy-strategy">Off-Policy strategy</h4>
+<p>We can use 2 seperate policies for exploration <span
+class="math inline"><em>b</em>(<em>a</em>|<em>s</em>)</span> to collect
+the experience/trajectory, and optimization (Target policy <span
+class="math inline"><em>π</em>(<em>a</em>|<em>s</em>)</span> that uses
+the experience from <span class="math inline"><em>b</em></span>) to
+improve towards optimal policy:</p>
+<p><span class="math display">$$
+\begin{equation}\pi(s) \leftarrow \argmax_a Q(s,a).
+\end{equation}$$</span></p>
+<p>This means that Exploratory policy has to cover all the actions that
+the Target policy can take:</p>
+<p><span
+class="math display"><em>π</em>(<em>a</em>|<em>s</em>) &gt; 0 ⇒ <em>b</em>(<em>a</em>|<em>s</em>) &gt; 0.</span></p>
+<p>Both <span class="math inline"><em>b</em></span> and <span
+class="math inline"><em>π</em></span> will still be using the same
+action values, but <span class="math inline"><em>b</em></span> will have
+a bit more randomness in choosing the action, so the average return is
+not approximated under <span class="math inline"><em>π</em></span> but
+under <span class="math inline"><em>b</em></span> which handles the
+exploration: <span
+class="math display">𝔼<sub><em>b</em></sub>[<em>G</em><sub><em>t</em></sub>|<em>S</em><sub><em>t</em></sub>=<em>s</em>,<em>A</em><sub><em>t</em></sub>=<em>a</em>] = <em>q</em><sub><em>b</em></sub>(<em>s</em>,<em>a</em>).</span></p>
+<p>We need to make sure that the Exploratory policies are exploring
+properly. We can use the <strong>Importance Sampling</strong>,
+statistical technique to estimate the expected values of a distribution
+by working with samples from another distribution:</p>
+<p><span class="math display">$$
+\begin{equation}W_t = \prod_{k=t}^{T-1} \frac{\pi(A_k|S_k)}{b(A_k|S_k)}
+\end{equation}$$</span></p>
+<p>which gives the ratio of probability of following the trajectory by
+target policy and probability of following the trajectory by exploratory
+policy.</p>
+<p>By correcting the returns using importance sampling, we will
+approximate the value under <span
+class="math inline"><em>π</em></span>:</p>
+<p><span
+class="math display">𝔼[<em>W</em><sub><em>t</em></sub><em>G</em><sub><em>t</em></sub>|<em>S</em><sub><em>t</em></sub>=<em>s</em>] = <em>v</em><sub><em>π</em></sub>(<em>s</em>).</span></p>
+<p>We then update the <span class="math inline"><em>Q</em></span> values
+iteratively using the <em>alpha</em> approach:</p>
+<p><span class="math display">$$
+\begin{equation}Q(s,a) \leftarrow Q(s,a) + \frac{W_t}{C(s,a)}[G-Q(s,a)]
+\end{equation}$$</span></p>
+<p>where <span class="math inline">$C(s,a) = \sum_{k=1}^{N} W_k$</span>
+to normalize the updates to smooth out the learning process.</p>
