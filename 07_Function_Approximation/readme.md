@@ -188,7 +188,7 @@ Mean Absolute error takes the average of all the errors:
 
 $$
 \begin{equation}
-    L(w) = \frac{1}{M} \sum_{i=1}^N |y_i - \hat{y}_i|.
+    L(w) = \frac{1}{N} \sum_{i=1}^N |y_i - \hat{y}_i|.
 \end{equation}
 $$
 
@@ -196,7 +196,7 @@ Mean Squared error penalized the bigger errors more by squaring the error:
 
 $$
 \begin{equation}
-    L(w) = \frac{1}{M} \sum_{i=1}^N [y_i - \hat{y}_i]^2.
+    L(w) = \frac{1}{N} \sum_{i=1}^N [y_i - \hat{y}_i]^2.
 \end{equation}
 $$
 
@@ -204,7 +204,7 @@ We can marry Mean Squared error with Temporal-Difference error by getting the av
 
 $$
 \begin{equation}
-    \hat{L}(w) = \frac{1}{M} \sum_{i=1}^N [R_{t+1} + \gamma \hat{q}(S_{t+1}, A_{t+1}|w) - \hat{q}(S_{t}, A_{t}|w)]^2.
+    \hat{L}(w) = \frac{1}{N} \sum_{i=1}^N [R_{t+1} + \gamma \hat{q}(S_{t+1}, A_{t+1}|w) - \hat{q}(S_{t}, A_{t}|w)]^2.
 \end{equation}
 $$
 
