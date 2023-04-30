@@ -113,3 +113,5 @@ $$
 This also works where the state has several dimensions, where you just aggregate each of the dimension and get the Cartesian product of the sets of aggegated dimensions.
 
 #### Tile Coding
+
+With state aggregation, there is a loss of precision due to Discretization Error. So, we perform several state independent aggregations where each one aggregate a different range of values. We then take the average of the state values from all aggregations.
