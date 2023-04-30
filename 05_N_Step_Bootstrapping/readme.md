@@ -1,13 +1,8 @@
----
-header-includes:
-  - \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
----
-
 # N-Step Bootstrapping
 
 We want to get less variance by waiting for reward from n-steps forward. 
 
-For just 1-Step bootstrapping:
+For just 1-Step bootstrapping (same as vanilla SARSA and Q-Learning):
 
 $$
 \begin{equation}
