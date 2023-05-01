@@ -106,3 +106,86 @@ $$
 
 ## Policy Gradient Theorem
 
+We define the performance of the policy as:
+
+$$
+\begin{equation}
+    J(\theta) = v_\pi(S_0).
+\end{equation}
+$$
+
+The gradient of the policy's performance can be derived to be the gradient of the actions' probabilities. It means that the policy performance $J$ changes wrt to the action probabilities $\pi$ which in turn changes wrt to the parameter weights $\theta$:
+
+$$
+\begin{equation}
+    \triangledown J(\theta) \propto \sum_s \mu(s) \sum_a q_\pi(s,a) \triangledown \pi(a|s, \theta)
+\end{equation}
+$$
+
+where $\mu(s)$ is the state distribution following policy $\pi$.
+
+## REINFORCE
+
+Combination of Policy Gradient and Monte Carlo methods where we wait until the end of the simulation to generate the actual rewards from the state and action pairs of the actual experience gathered rather than bootstrapped and temporal-differenced. Then, we adjust the weights of the neural networks using the actual rewards, and state and action vectors:
+
+$$
+\begin{equation}
+    \theta_{t+1} = \theta_t +  \alpha \triangledown\hat{J}(\theta).
+\end{equation}
+$$
+
+where $\hat{J}(\theta)$ is just the approximated gradient because the experience are only from 1 episode.
+
+Using the Policy Graidient Theorem, the gradient of the performance is estimated by the gradient of the action probabilities:
+
+$$
+\begin{equation}
+    \triangledown \hat{J} = \gamma^tG_t \cdot \frac{\triangledown\pi(A_t|S_t,\theta_t)}{\pi(A_t|S_t,\theta_t)}
+\end{equation}
+$$
+
+where bigger return $G_t$ means that the action probability carries more importance to improving the policy performance, and the gradient of the action probability $\triangledown\pi(A_t|S_t,\theta_t)$ is normalized by $\pi(A_t|S_t,\theta_t)$ to scale down the gradients for highly popular actions.
+
+Following the policy gradient derived, the parameter weights $\theta$ are then updated to improve the estimate policy performance:
+
+$$
+\begin{equation}
+    \theta_{t+1} = \theta_t + \alpha \gamma^tG_t \cdot \frac{\triangledown\pi(A_t|S_t,\theta_t)}{\pi(A_t|S_t,\theta_t)}
+\end{equation}
+$$
+
+and since $\triangledown \ln \pi(A_t|S_t, \theta) = \frac{\triangledown\pi(A_t|S_t,\theta_t)}{\pi(A_t|S_t,\theta_t)}$, the final update will be:
+
+$$
+\begin{equation}
+    \theta_{t+1} = \theta_t + \alpha \gamma^tG_t \cdot \triangledown \ln \pi(A_t|S_t, \theta).
+\end{equation}
+$$
+
+## Entropy Regularization
+
+Since the action probabilities are directly outputted by the neural network, the mechanism for choosing the actions are abstracted away from us. In order to ecourage exploration, we incentivse the agent to keep the entropy of its policy as high as possible:
+
+$$
+\begin{equation}
+    H(X) = -\sum_{x \in X} p(x) \cdot \ln p(x)
+\end{equation}
+$$
+
+which measures the level of uncertainty of a random variable.
+
+Thus, the uncertainty of the action to be selected by the policy for a state can be expressed as:
+
+$$
+\begin{equation}
+    H_\pi(A_t) = -\sum_{x \in X} \pi(a|S_t) \cdot \ln \pi(a|S_t)
+\end{equation}
+$$
+
+and the gradient of which is added to to SGD update as:
+
+$$
+\begin{equation}
+    \theta_{t+1} = \theta_t + \alpha [\gamma^tG_t \cdot \triangledown \ln \pi(A_t|S_t, \theta) + \beta\triangledown H(\pi)].
+\end{equation}
+$$
