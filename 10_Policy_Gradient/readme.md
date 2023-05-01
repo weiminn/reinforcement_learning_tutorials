@@ -186,6 +186,6 @@ and the gradient of which is added to to SGD update as:
 
 $$
 \begin{equation}
-    \theta_{t+1} = \theta_t + \alpha [\gamma^tG_t \cdot \triangledown \ln \pi(A_t|S_t, \theta) + \beta\triangledown H(\pi)].
+    \theta_{t+1} = \theta_t + \alpha [\gamma^tG_t \cdot \triangledown \ln \pi(A_t|S_t, \theta) - \beta\triangledown H(\pi)].
 \end{equation}
 $$
