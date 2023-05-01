@@ -8,6 +8,6 @@ $$
 \end{equation}
 $$
 
-where $\pi(s|\theta_{target}) = \max_a \hat{q}(S'_{i}, A'_{i}|\theta_{target})$ is the action chosen by the target policy from the target network.
+where $|K|$ is the training batch size, and $\pi(s|\theta_{target}) = \max_a \hat{q}(S'_{i}, A'_{i}|\theta_{target})$ is the action chosen by the target policy from the target network.
 
 Afterwards, all the other steps regarding Replay Buffer sampling, Stochastic Gradient Descent, and cloning and updating target network is the same with Deep SARSA.
