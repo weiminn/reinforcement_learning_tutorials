@@ -16,7 +16,7 @@ $$
 \end{equation}
 $$
 
-where the "bootstrapped" portion $R_i + \gamma \hat{q}(S'_{i}, A'_{i}|\theta_{target})$ is the target we want to push our weights towards, and $\hat{q}(S_{i}, A_{i}|\theta)$ is the old state value.
+where $|K|$ is the size of the training batch, and the "bootstrapped" portion $R_i + \gamma \hat{q}(S'_{i}, A'_{i}|\theta_{target})$ is the target we want to push our weights towards, and $\hat{q}(S_{i}, A_{i}|\theta)$ is the old state value.
 
 Then we calculate the gradient of the Cost function w.r.t the parameters $\theta = [w_1, w_2, \cdots, w_n]$:
 
