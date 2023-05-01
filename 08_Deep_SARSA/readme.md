@@ -63,7 +63,7 @@ $$
 
 ## Target Network
 
-We make a copy of the neural network to calculate the targets/ choose the actions for bootstrapping the state-action value, so that the target network does not change with SGD (and remains stable) and consistent with chosen actions throughout the SGD:
+We make a copy of the neural network to calculate the targets/ choose the actions for bootstrapping the state-action value, so that the target network does not change with SGD (and remains stable) and the chosen actions are remains consistent which allows the main network to catchup with the target network, and reduce variance further:
 
 $$
 \begin{equation}
