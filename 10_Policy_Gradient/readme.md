@@ -1,6 +1,6 @@
 # Policy Gradient Methods
 
-Tabular methods and Function Approximators are value-based which means the policy looks at the value of the state-actions $Q$ and choose the action with optimal estimated return. In policy gradient methods, we use the function approxmiators to not predict the $Q$ values but to estimate teh probabilities of taking each action:
+Tabular methods and Function Approximators are value-based which means the policy looks at the value of the state-actions $Q$ and choose the action with optimal estimated return. In policy gradient methods, we use the function approxmiators to not predict the $Q$ values but to estimate the probabilities of taking each action:
 
 $$
 \begin{equation}
