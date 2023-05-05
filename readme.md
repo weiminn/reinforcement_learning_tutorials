@@ -6,10 +6,24 @@ Create Virtual Environment
 > `python -m venv --copies venv`
 
 Enter the virtual environment
-> `source venv/bin/activate`
+```
+source venv/bin/activate
+```
 
 Install tools
->`pip install pyglet==1.5.27 pyopengl matplotlib pandas numpy tqdm jupyter seaborn scikit-learn gym==0.21.0`
+```
+pip install brax==0.0.12 jax==0.3.14 jaxlib==0.3.14 pyglet==1.5.27 pyopengl matplotlib pandas numpy tqdm jupyter seaborn scikit-learn gym==0.21.0 gymnasium==0.26.3 pygame
+```
 
 Install torch
-> `pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu`
+```
+pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
+```
+
+```
+sudo apt-get install xvfb ffmpeg
+```
+
+```
+pip install pytorch-lightning==1.6 pyvirtualdisplay
+```

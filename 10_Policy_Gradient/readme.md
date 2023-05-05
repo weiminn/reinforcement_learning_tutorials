@@ -144,7 +144,7 @@ $$
 \end{equation}
 $$
 
-where bigger return $G_t$ means that the action probability carries more importance to improving the policy performance, and the gradient of the action probability $\triangledown\pi(A_t|S_t,\theta_t)$ is normalized by $\pi(A_t|S_t,\theta_t)$ to scale down the gradients for highly popular actions.
+where bigger return $G_t$ means that the action probability carries more importance to improving the policy performance, and the gradient of the action probability $\triangledown\pi(A_t|S_t,\theta_t)$ is normalized by dividing with $\pi(A_t|S_t,\theta_t)$ to scale down the gradients for highly popular actions.
 
 Following the policy gradient derived, the parameter weights $\theta$ are then updated to improve the estimate policy performance:
 
@@ -189,3 +189,50 @@ $$
     \theta_{t+1} = \theta_t + \alpha [\gamma^tG_t \cdot \triangledown \ln \pi(A_t|S_t, \theta) - \beta\triangledown H(\pi)].
 \end{equation}
 $$
+
+## Policy Gradient for Continuous Action Spaces
+
+Some action spaces can be a continuous range $A = [a, b]$, and thus have infinite choice of action s.t. $|A|=\infty$. But using policy gradient, we can get a probability distribution of either discrete or continuous actions and we can sample our action from the distribution:
+
+$$
+\begin{equation}
+    a \sim \pi(s).
+\end{equation}
+$$
+
+Normal Distribution can be described with 2 values, mean $\mu$ and standard deviation $\sigma$:
+
+$$
+\begin{equation}
+    f(s) = \frac{1}{\sigma \sqrt{2\pi}}\exp(-\frac{1}{2}(\frac{x - \mu}{\sigma})^2).
+\end{equation}
+$$
+
+Hence, the probability of choosing the action $a$ is:
+
+$$
+\begin{equation}
+    \pi(a|s) = \frac{1}{\sigma \sqrt{2\pi}}\exp(-\frac{1}{2}(\frac{a - \mu}{\sigma})^2).
+\end{equation}
+$$
+
+The policy (neural) network can be configured to output 2 values at the final layers for $\mu$ and $\sigma$ respectively.
+
+The formulae for log probabilities and entropy are as follows:
+
+$$
+\begin{equation}
+    \ln \pi (a|s) = -\frac{(a - \mu)^2}{2\sigma^2} - \ln \sigma - \ln \sqrt{2\pi}
+\end{equation}
+$$
+
+and 
+
+$$
+\begin{equation}
+    H(\pi) = \frac{1}{2} + \frac{1}{2}\ln(2\pi\sigma^2).
+\end{equation}
+$$
+
+## PyTorch Lightning
+
