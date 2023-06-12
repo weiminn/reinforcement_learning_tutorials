@@ -1,4 +1,4 @@
-# Advantage Actor Critic
+# Advantage Actor-Critic
 
 Policy gradient is combined with Temporal Difference where the state values are estimated by bootstrapping. TD-error formula is applied in Advantage function to find the excess return of choosing action $a$ instead of following the [expected] policy:
 
